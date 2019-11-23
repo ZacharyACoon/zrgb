@@ -18,10 +18,9 @@ class LEDController:
             self.leds.show()
             await trio.sleep(3)
 
-    def mode(self, mode, details):
-        for task in self.nursery.child_tasks:
-            print(task)
-            print(dir(task))
+    async def mode(self, mode, details):
+        if self.nursery.child_tasks:
+            await self.nursery.cancel_scope.cancel()
 
         if mode in self.modes:
             self.nursery.start_soon(self.worker, self.modes[mode](self.leds.size))
@@ -32,5 +31,5 @@ async def led_controller(command_output):
         controller = LEDController(nursery)
         while True:
             async for command in command_output:
-                controller.mode(command.mode, command.details)
+                await controller.mode(command.mode, command.details)
             await trio.sleep(0.25)
