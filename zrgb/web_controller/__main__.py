@@ -1,9 +1,6 @@
 import trio
 from zrgb.web_controller.web_server import web_server
-from zrgb.strip.ws281x.LEDs import LEDs
-
-
-leds = LEDs(18, 269, brightness=5)
+from zrgb.led_controller.led_controller import led_controller
 
 
 async def main(task_status=trio.TASK_STATUS_IGNORED):
@@ -12,7 +9,6 @@ async def main(task_status=trio.TASK_STATUS_IGNORED):
     async with trio.open_nursery() as nursery:
         nursery.start_soon(web_server, command_input)
         nursery.start_soon(led_controller, command_output)
-
 
 if __name__ == "__main__":
     trio.run(main)

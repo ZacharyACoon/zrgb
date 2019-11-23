@@ -1,5 +1,5 @@
-from zrgb.strip.ws281x.LEDs import LEDs
-from zrgb.strip.mode.lib.life_1d import Life
+from zrgb.strip.LEDs import LEDs
+from zrgb.led_controller.modes.util import Life
 import trio
 
 
